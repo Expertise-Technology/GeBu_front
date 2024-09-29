@@ -1,0 +1,72 @@
+.row {
+  display: flex;
+  border-bottom: 1px solid #dee2e6; /* Line between rows */
+}
+
+.col {
+  flex: 1;
+  padding: 0.75rem;
+  border-right: 1px solid #dee2e6; /* Line between columns */
+}
+
+.col-action {
+  flex: 1;
+  padding: 0.75rem;
+  border-right: 0px solid #dee2e6; /* Line between columns */
+}
+
+.col:last-child {
+  border-right: none; /* Remove the right border for the last column */
+}
+
+.table-header, .table-subheader {
+  font-weight: bold;
+  background-color: #f8f9fa; /* Background color for headers */
+}
+
+.table-subrow {
+  border-top: 1px solid #dee2e6; /* Line between subrows */
+}
+
+.gray-background {
+  background-color: rgb(219, 215, 215);
+}
+
+.blue-background {
+  background-color: rgb(129, 160, 206);
+}
+
+.green-background {
+  background-color: rgb(144, 179, 150);
+}
+
+
+
+.center-text {
+  color: red;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 150%;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .text-uppercase {
+    font-size: 1.5rem;
+  }
+  .container {
+    padding: 0 10px;
+  }
+  .table-row, .table-subrow {
+    flex-direction: column;
+  }
+}
+
+.couleur-gris {
+  background-color: #adabab; /* Couleur de fond gris clair */
+}
+
+.couleur-bleu {
+  background-color: #4b81e6; /* Couleur de fond gris clair */
+}
+
+

@@ -1,0 +1,66 @@
+<div class="container mt-5">
+  <div class="error-message-panel" *ngIf="message">
+    <div class="error-icon">&#10060;</div>
+    <div class="error-message">{{message}}</div>
+  </div>
+
+  <h2>Register</h2>
+  <form (ngSubmit)="register()">
+    <div class="form-group">
+      <label for="firstname">First name</label>
+      <input
+        id="firstname"
+        name="firstname"
+        required type="text"
+        [(ngModel)]="user.firstname"
+      >
+    </div>
+    <div class="form-group">
+      <label for="lastname">Last name</label>
+      <input
+        id="lastname"
+        name="lastname"
+        required type="text"
+        [(ngModel)]="user.lastname"
+      >
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        required type="text"
+        [(ngModel)]="user.email"
+      >
+    </div>
+    <div class="form-group">
+      <label for="role">Role</label>
+      <input
+        id="role"
+        name="role"
+        required type="text"
+        [(ngModel)]="user.role"
+      >
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        name="password"
+        required type="password"
+        [(ngModel)]="user.password"
+      >
+    </div>
+    <!-- <div class="form-group">
+      <input
+        id="rememberMe"
+        name="rememberMe"
+        type="checkbox"
+        [(ngModel)]="registerRequest.mfaEnabled"
+      >
+      <label for="rememberMe">Enable 2FA (Two Factors Authentication)</label>
+    </div> -->
+    <button type="submit">Register</button>
+    <a routerLink="/login">Login</a>
+  </form>
+</div>

@@ -1,0 +1,39 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-primary text-white">
+          <h3 class="text-center">Mouvement du compte</h3>
+        </div>
+        <div class="card-body p-4">
+          <form>
+            <div class="mb-3">
+              <label for="Name" class="form-label">Libele</label>
+              <input type="text" class="form-control" name="libele" [(ngModel)]="newMouvment.libele" placeholder="Entrez le libele" >
+            </div>
+            <div class="mb-3">
+              <label for="Location" class="form-label">Date</label>
+              <input type="Date" class="form-control" name="date" [(ngModel)]="newMouvment.dateMv" placeholder="Entrez la date" >
+            </div>
+
+            <div class="mb-3">
+              <label for="type" class="form-label">Type</label>
+              <select class="form-select" [(ngModel)]="newMouvment.typeMv" name="id-type" placeholder="Selectionnez le type">
+                <option value="debit">Débit</option>
+                <option value="credit">Crédit</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="Location" class="form-label">Montant</label>
+              <input type="number" class="form-control" name="montant" [(ngModel)]="newMouvment.amountMv" placeholder="Entrez le montant" >
+            </div>
+            <button type="submit" class="btn btn-primary w-100" (click)="addMouvment()">Ajouter</button>
+          </form>
+        </div>
+        <div class="card-footer text-center py-3">
+          <small class="text-muted">© 2024 primora</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

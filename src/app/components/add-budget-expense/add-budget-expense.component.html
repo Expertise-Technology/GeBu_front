@@ -1,0 +1,30 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-primary text-white">
+          <h3 class="text-center">Ajouter une nouvelle dépense</h3>
+        </div>
+        <div class="card-body p-4">
+          <form>
+            <div class="mb-3">
+              <label for="line" class="form-label">Ligne Budgétaire</label>
+              <select class="form-select" [(ngModel)]="newIDline" name="id-budget-line">
+                <option *ngFor="let line of listLine" [value]="line.id">{{line.numLine}}</option>
+                <option value="other" [routerLink]="['/addligne']">Autre...</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="amount" class="form-label">Montant</label>
+              <input type="number" class="form-control" name="amount" placeholder="Entrez le montant" [(ngModel)]="newExpense.amount">
+            </div>
+            <button type="submit" class="btn btn-primary w-100" (click)="addExpense()">Ajouter</button>
+          </form>
+        </div>
+        <div class="card-footer text-center py-3">
+          <small class="text-muted">© 2024 primora</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

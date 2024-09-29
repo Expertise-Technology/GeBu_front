@@ -1,0 +1,148 @@
+<div class="col-12 px-3 px-md-4" *ngIf="budgets && budgets.length">
+  <h2 class="text-uppercase text-center">{{ centerName }}</h2>
+  <div class="col-6 d-flex justify-content-between align-items-center">
+    <button class="btn btn-warning btn-sm text-uppercase" type="button" [routerLink]="['/mouvment', centerId]">Mouvements</button>
+    <a class="btn btn-warning btn-sm text-uppercase" type="button" (click)="addAccount()">Crer un compte</a>
+  </div>
+  <span class="mx-auto"><h2 class="text-uppercase text">Solde : {{ amount }}</h2></span>
+  <div class="text-center my-3">
+    <button class="btn btn-danger btn-block w-100 w-md-auto" type="button" id="dropdownButton" [routerLink]="['/add/budget', centerId]">Nouveau budget</button>
+  </div>
+
+  <div *ngFor="let budget of budgets" class="mb-5">
+    <div class="d-flex justify-content-between align-items-center">
+      <span class="fw-bold">{{ budget.periode }} {{ budget.year.libellerYear }}</span>
+    </div>
+
+    <div class="container-fluid mt-4">
+      <div class="row table-header green-background text-center">
+        <div class="col-6 d-flex justify-content-between align-items-center">
+          <span class="mx-auto">RECETTES</span>
+          <button class="btn btn-warning btn-sm" type="button" [routerLink]="['/add/recipe', budget.id]">Nouveau</button>
+        </div>
+        <div class="col-6 d-flex justify-content-between align-items-center">
+          <span class="mx-auto">DÉPENSES</span>
+          <button class="btn btn-warning btn-sm" type="button" [routerLink]="['/add/expense', budget.id]">Nouveau</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- RECETTES Section -->
+        <div class="col-12 col-md-6">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="table-subheader">
+                <tr>
+                  <th>Rubriques</th>
+                  <th>Montant</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+
+
+                <tr class="table-subrow">
+                  <td class="couleur-gris">1/ Excédent budgétaire / trésorerie d'ouverture </td>
+                  <td class="couleur-gris"></td>
+                  <td  class="couleur-gris"></td>
+                </tr>
+                <tr class="table-subrow">
+                  <td style="visibility: hidden;">rien</td>
+                </tr>
+                <tr class="table-subrow table-primary">
+                  <td>Total Solde d'ouverture</td>
+                  <td>0</td>
+                  <td></td>
+                </tr>
+                <tr class="table-subrow">
+                  <td  class="couleur-gris">2/ Ressources du trimestre échu (Ressources FBP à Verser sur le Compte Bancaire) </td>
+                  <td  class="couleur-gris"></td>
+                  <td  class="couleur-gris"></td>
+                </tr>
+
+                <tr *ngFor="let recipe of budget.recipe" class="table-subrow">
+                  <td>{{ recipe.libelle }}</td>
+                  <td>{{ recipe.amount }}</td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" [routerLink]="['/update/recipe', recipe.id]">Modifier</a></li>
+                        <li><a class="dropdown-item" (click)="deleteRecipe(recipe)">Supprimer</a></li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="table-subrow table-primary">
+                  <td>Total FBP</td>
+                  <td>{{ budget.totalRecipe }}</td>
+                  <td></td>
+                </tr>
+                <tr class="gray-background">
+                  <td class="couleur-gris">TOTAL DES RECETTES (A)</td>
+                  <td class="couleur-gris">{{ budget.totalRecipe }}</td>
+                  <td  class="couleur-gris"></td>
+                  <td></td>
+                </tr>
+                <tr class="gray-background">
+                  <td class="couleur-gris">BALANCE (A)-(B)</td>
+                  <td>{{ budget.totalRecipe - budget.totalExpense }}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- DÉPENSES Section -->
+        <div class="col-12 col-md-6">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="table-subheader">
+                <tr>
+                  <th>Code / Lignes</th>
+                  <th>Rubriques</th>
+                  <th>Total</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let expense of budget.expense" class="table-subrow">
+                  <td>{{ expense.budgetLine.numLine }}</td>
+                  <td>{{ expense.budgetLine.description }}</td>
+                  <td>{{ expense.amount }}</td>
+                  <td>
+                    <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" [routerLink]="['/update/expense', expense.id]">Modifier</a></li>
+                        <li><a class="dropdown-item" (click)="deleteExpense(expense)">Supprimer</a></li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="gray-background">
+                  <td class="couleur-gris">###</td>
+                  <td class="couleur-gris">TOTAL DES DÉPENSES (B)</td>
+                  <td class="couleur-gris">{{ budget.totalExpense }}</td>
+                  <td class="couleur-gris"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!budgets || budgets.length === 0">
+  <p class="text-center">Aucun budget trouvé pour le centre {{ centerName }}.</p>
+  <div class="text-center my-3">
+    <button class="btn btn-danger btn-block w-100 w-md-auto" type="button" id="dropdownButton" [routerLink]="['/add/budget', centerId]">Nouveau budget</button>
+  </div>
+</div>

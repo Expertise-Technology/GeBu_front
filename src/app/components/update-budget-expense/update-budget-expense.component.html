@@ -1,0 +1,27 @@
+<div class="content">
+  <div class="container">
+    <br/>
+    <div class="bg-secondary text-white p-3 mb-2 rounded">
+      <form>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="validationCustom01" class="form-label">Numero ligne</label>
+            <input readonly type="number" [(ngModel)]="currentExpense.budgetLine.numLine" name="line" class="form-control">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="validationCustom02" class="form-label">Libelé</label>
+            <input readonly type="text" [(ngModel)]="currentExpense.budgetLine.description" name="lineDescription" class="form-control">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="validationCustom03" class="form-label">Montant</label>
+            <input type="number" [(ngModel)]="currentExpense.amount" name="amountExpense" class="form-control">
+          </div>
+        </div>
+        <br/>
+        <div class="text-center text-md-end">
+          <button class="btn btn-primary w-100 w-md-auto" type="submit" (click)="updateExpense()">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

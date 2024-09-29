@@ -1,0 +1,9 @@
+<!-- center-list.component.html -->
+<div class="container">
+  <h2>Centres</h2>
+  <ul class="list-group">
+    <li *ngFor="let center of centers" class="list-group-item">
+      <a [routerLink]="['/center', center.id]">{{ center?.name }}</a>
+    </li>
+  </ul>
+</div>

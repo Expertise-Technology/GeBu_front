@@ -1,0 +1,45 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-primary text-white">
+          <h3 class="text-center">Ajouter un nouveau budget</h3>
+        </div>
+        <div class="card-body p-4">
+          <form>
+            <div class="mb-3">
+              <label for="line" class="form-label">Periode</label>
+              <select class="form-select" [(ngModel)]="newBudget.periode" name="id-budget-line">
+                <option value="Premier Trimestre">Premier Trimestre</option>
+                <option value="Deuxième Trimestre">Deuxième Trimestre</option>
+                <option value="Troisième Trimestre">Troisième Trimestre</option>
+                <option value="Quatrième Trimestre">Quatrième Trimestre</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="year" class="form-label">Année</label>
+              <div class="input-group">
+                <select class="form-select" [(ngModel)]="newIdYear" name="id-budget-year" (ngModelChange)="checkIfOther($event)">
+                  <option *ngFor="let year of listYear" [value]="year.id">{{ year.libellerYear }}</option>
+                  <option value="other">Autre...</option>
+                </select>
+                <input
+                *ngIf="isOtherYear"
+                  type="number"
+                  name="year"
+                  class="form-control"
+                  placeholder="Saisissez une année"
+                  [(ngModel)]="newYear.libellerYear">
+                  <button *ngIf="isOtherYear" type="submit" class="btn btn-primary w-100" (click)="addYear()">Ajouter l'année</button>
+              </div>
+            </div>
+            <button *ngIf="!isOtherYear"type="submit" class="btn btn-primary w-100" (click)="addBudget()">Ajouter le centre</button>
+          </form>
+        </div>
+        <div class="card-footer text-center py-3">
+          <small class="text-muted">© 2024 primora</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
