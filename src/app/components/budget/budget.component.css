@@ -69,4 +69,11 @@
   background-color: #4b81e6; /* Couleur de fond gris clair */
 }
 
+.disabled {
+  pointer-events: none; /* Désactive les clics */
+  opacity: 0.6;         /* Rend l'élément semi-transparent */
+  cursor: not-allowed;  /* Change le curseur pour indiquer l'état désactivé */
+}
+
+
 

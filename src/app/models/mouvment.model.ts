@@ -7,4 +7,6 @@ export class Mouvment {
   typeMv! : string;
   amountMv! : number;
   account! : Account;
+  reference! : string;
+  value! : Date;
 }

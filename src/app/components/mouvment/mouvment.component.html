@@ -22,20 +22,27 @@
                 <tr>
                   <th>Date</th>
                   <th>Libéllé de l'opération</th>
-                  <th>Montant
-                    <!-- <tr class="table-subrow">
-                      <td> Debit </td>
-                      <td> Crédit </td>
-                    </tr> -->
+                  <th>Référence</th>
+                  <th>Valeur
                   </th>
+                  <th>Débit</th>
+                  <th>Crédit</th>
+                  <!-- <th>Actions</th> -->
                 </tr>
               </thead>
               <tbody>
                 <tr  *ngFor="let mouvment of mouvments" class="table-subrow">
-                  <td> {{ mouvment.dateMv }} </td>
+                  <td> {{ mouvment.dateMv | date:'dd MMMM yyyy' }} </td>
                   <td> {{ mouvment.libele }} </td>
-                  <td> {{ mouvment.amountMv }} </td>
-                  <td>
+                  <td> {{ mouvment.reference }} </td>
+                  <td> {{ mouvment.value | date:'dd MMMM yyyy' }} </td>
+
+                  <td *ngIf="mouvment.typeMv === 'debit'"> {{ mouvment.amountMv }} </td>
+                  <td *ngIf="mouvment.typeMv !== 'debit'"> 0 </td>
+                  <td *ngIf="mouvment.typeMv === 'credit'"> {{ mouvment.amountMv }} </td>
+                  <td *ngIf="mouvment.typeMv !== 'credit'"> 0 </td>
+
+                  <!-- <td>
                     <div class="dropdown">
                       <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Actions
@@ -45,16 +52,21 @@
                         <li><a class="dropdown-item" >Supprimer</a></li>
                       </ul>
                     </div>
-                  </td>
+                  </td> -->
+
                 </tr>
                 <tr class="gray-background">
-                  <td class="couleur-gris">MOUVEMENT DEBIT CREDIT</td>
-                  <td> budget.totalRecipe - budget.totalExpense</td>
+                  <td class="couleur-gris">MOUVEMENT DEBIT CREDIT </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td> {{ totalDebit }}</td>
+                  <td> {{ totalCredit }}  </td>
                   <td></td>
                 </tr>
                 <tr class="gray-background">
-                  <td class="couleur-gris">SOLDE BANCAIRE</td>
-                  <td> budget.totalRecipe - budget.totalExpense</td>
+                  <td class="couleur-gris"> SOLDE BANCAIRE </td>
+                  <td> {{ solde }} </td>
                   <td></td>
                 </tr>
               </tbody>
@@ -62,8 +74,8 @@
         </div>
 
 <div *ngIf="!mouvments || mouvments.length === 0">
-  <p class="text-center">Aucun budget trouvé pour le centre  centerName.</p>
-  <!-- <div class="text-center my-3">
-    <button class="btn btn-danger btn-block w-100 w-md-auto" type="button" id="dropdownButton" [routerLink]="['/add/budget', 2]">Nouveau budget</button>
-  </div> -->
+  <p class="text-center">Aucun mouvement trouvé pour le centre  centerName.</p>
+  <div class="text-center my-3">
+    <button class="btn btn-danger btn-block w-100 w-md-auto" type="button" id="dropdownButton" [routerLink]="['/add/budget', 2]">Nouveau Compte</button>
+  </div>
 </div>

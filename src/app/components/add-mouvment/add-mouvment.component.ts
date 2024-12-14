@@ -27,7 +27,8 @@ export class AddMouvmentComponent {
 
   constructor( private mouvmentService: MouvmentService,
     private activedRoute: ActivatedRoute,
-    private accountService: AccountService ){
+    private accountService: AccountService,
+    private router: Router){
 
     this.accountId = this.activedRoute.snapshot.params['id'];
 

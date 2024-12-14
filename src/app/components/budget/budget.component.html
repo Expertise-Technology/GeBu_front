@@ -1,10 +1,10 @@
 <div class="col-12 px-3 px-md-4" *ngIf="budgets && budgets.length">
   <h2 class="text-uppercase text-center">{{ centerName }}</h2>
   <div class="col-6 d-flex justify-content-between align-items-center">
-    <button class="btn btn-warning btn-sm text-uppercase" type="button" [routerLink]="['/mouvment', centerId]">Mouvements</button>
+    <button class="btn btn-warning btn-sm text-uppercase" type="button" (click)="goToMouvments('/mouvment',centerId)">Mouvements</button>
     <a class="btn btn-warning btn-sm text-uppercase" type="button" (click)="addAccount()">Crer un compte</a>
   </div>
-  <span class="mx-auto"><h2 class="text-uppercase text">Solde : {{ amount }}</h2></span>
+  <span class="mx-auto"><h2 class="text-uppercase text">Solde : {{ getFormattedAmount(amount) }}</h2></span>
   <div class="text-center my-3">
     <button class="btn btn-danger btn-block w-100 w-md-auto" type="button" id="dropdownButton" [routerLink]="['/add/budget', centerId]">Nouveau budget</button>
   </div>
@@ -52,17 +52,17 @@
                 <tr class="table-subrow table-primary">
                   <td>Total Solde d'ouverture</td>
                   <td>0</td>
-                  <td></td>
                 </tr>
                 <tr class="table-subrow">
                   <td  class="couleur-gris">2/ Ressources du trimestre échu (Ressources FBP à Verser sur le Compte Bancaire) </td>
                   <td  class="couleur-gris"></td>
-                  <td  class="couleur-gris"></td>
                 </tr>
 
-                <tr *ngFor="let recipe of budget.recipe" class="table-subrow">
+                <tr *ngFor="let recipe of budget.recipe" [class.disabled]="recipe.cashed" class="table-subrow">
                   <td>{{ recipe.libelle }}</td>
-                  <td>{{ recipe.amount }}</td>
+                  <!-- <td>{{ recipe.amount | currency:'FCFA':'symbol':'1.2-2' }}</td> -->
+                  <td>{{ getFormattedAmount(recipe.amount) }}</td>
+
                   <td>
                     <div class="dropdown">
                       <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -71,24 +71,23 @@
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" [routerLink]="['/update/recipe', recipe.id]">Modifier</a></li>
                         <li><a class="dropdown-item" (click)="deleteRecipe(recipe)">Supprimer</a></li>
+                        <li><a class="dropdown-item" (click)="openModal(recipe)">Encaiseé</a></li>
                       </ul>
                     </div>
                   </td>
                 </tr>
                 <tr class="table-subrow table-primary">
                   <td>Total FBP</td>
-                  <td>{{ budget.totalRecipe }}</td>
-                  <td></td>
+                  <td>{{ getFormattedAmount(budget.totalRecipe) }}</td>
                 </tr>
                 <tr class="gray-background">
                   <td class="couleur-gris">TOTAL DES RECETTES (A)</td>
-                  <td class="couleur-gris">{{ budget.totalRecipe }}</td>
-                  <td  class="couleur-gris"></td>
+                  <td class="couleur-gris">{{ getFormattedAmount(budget.totalRecipe) }}</td>
                   <td></td>
                 </tr>
                 <tr class="gray-background">
                   <td class="couleur-gris">BALANCE (A)-(B)</td>
-                  <td>{{ budget.totalRecipe - budget.totalExpense }}</td>
+                  <td class="couleur-gris">{{ getFormattedAmount(budget.totalRecipe - budget.totalExpense) }}</td>
                   <td></td>
                 </tr>
               </tbody>
@@ -109,10 +108,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let expense of budget.expense" class="table-subrow">
+                <tr *ngFor="let expense of budget.expense" [class.disabled]="expense.paid" class="table-subrow">
                   <td>{{ expense.budgetLine.numLine }}</td>
                   <td>{{ expense.budgetLine.description }}</td>
-                  <td>{{ expense.amount }}</td>
+                  <td>{{ getFormattedAmount(expense.amount) }}</td>
                   <td>
                     <div class="dropdown">
                       <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -121,15 +120,17 @@
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" [routerLink]="['/update/expense', expense.id]">Modifier</a></li>
                         <li><a class="dropdown-item" (click)="deleteExpense(expense)">Supprimer</a></li>
+                        <li><a class="dropdown-item" (click)="openModal(expense)">Payé</a></li>
                       </ul>
                     </div>
                   </td>
                 </tr>
                 <tr class="gray-background">
-                  <td class="couleur-gris">###</td>
+
                   <td class="couleur-gris">TOTAL DES DÉPENSES (B)</td>
-                  <td class="couleur-gris">{{ budget.totalExpense }}</td>
                   <td class="couleur-gris"></td>
+                  <td class="couleur-gris">{{ getFormattedAmount(budget.totalExpense) }}</td>
+                  <!-- <td class="couleur-gris"></td> -->
                 </tr>
               </tbody>
             </table>
@@ -146,3 +147,49 @@
     <button class="btn btn-danger btn-block w-100 w-md-auto" type="button" id="dropdownButton" [routerLink]="['/add/budget', centerId]">Nouveau budget</button>
   </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Encaisseé une facture</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #form="ngForm">
+          <div class="mb-3">
+            <label for="libele" class="form-label">Libele</label>
+            <input type="text" class="form-control" id="libele"  name="libele" [(ngModel)]="newMouvment.libele" value="{{ modalData?.libelle || modalData?.budgetLine.description }}" disabled required>
+          </div>
+          <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="Date" class="form-control" id="date"  name="date" value="{{currentDate}}" disabled required>
+          </div>
+          <div class="mb-3">
+            <label for="reference" class="form-label">Réference</label>
+            <input type="text" class="form-control" id="reference" name="reference" [(ngModel)]="newMouvment.reference" required>
+          </div>
+          <div class="mb-3">
+            <label for="valeur" class="form-label">Valeur</label>
+            <input type="Date" class="form-control" id="valeur"  name="valeur" [(ngModel)]="newMouvment.value" required>
+          </div>
+          <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <input type="text" class="form-control" id="type"  name="type" value="debit" disabled required>
+          </div>
+          <div class="mb-3">
+            <label for="montant" class="form-label">Montant</label>
+            <input type="number" class="form-control" id="montant"  name="montant" [(ngModel)]="newMouvment.amountMv" value="{{modalData?.amount}}" disabled required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" (click)="addMouvment()">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+

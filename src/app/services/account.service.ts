@@ -30,4 +30,8 @@ export class AccountService {
   addAccount(account: Account) : Observable<Account>{
     return this.http.post<Account>(this.apiURL, account, httpOptions);
    }
+
+  updateAccount(account: Account) : Observable<Account>{
+    return this.http.post<Account>(this.apiURL, account, httpOptions);
+  }
 }

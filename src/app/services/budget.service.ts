@@ -36,7 +36,7 @@ export class BudgetService {
    }
 
    updateBudgetService(budget: Budget) : Observable<Budget>{
-    return this.http.put<Budget>(this.apiURL, budget, httpOptions);
+    return this.http.post<Budget>(this.apiURL, budget, httpOptions);
   }
 
   addBudgetService(budget: Budget) : Observable<Budget>{

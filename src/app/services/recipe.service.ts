@@ -35,7 +35,7 @@ export class RecipeService {
    }
 
    updateRecipe(recipe: Recipe) : Observable<Recipe>{
-    return this.http.put<Recipe>(this.apiURL, recipe);
+    return this.http.post<Recipe>(this.apiURL, recipe);
   }
 
   deleteRecipe(id: number) {
